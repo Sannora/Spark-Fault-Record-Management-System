@@ -14,4 +14,26 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Belirli bir kaydı ID ile çekecek bir GET isteği
+router.get('/:id', async (req, res) => {
+    try {
+        const record = await Record.findById(req.params.id);
+        if (!record) return res.status(404).json({message: 'Kayıt bulunamadı.'});
+        res.json(record);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+// Belirli kaydı silmek için DELETE isteği
+router.delete('/:id', async (req, res) => {
+    try {
+        const record = await Record.findByIdAndDelete(req.params.id);
+        if (!record) return res.status(404).json({message: 'Kayıt bulunamadı.'});
+        res.json({message: 'Kayıt silindi.'});
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
 module.exports = router;
