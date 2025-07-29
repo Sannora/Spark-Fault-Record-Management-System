@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const uploadRoute = require('./routes/upload');
+const recordsRoute = require('./routes/records');
 
 const PORT = 5000;
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 
 // Route bağlantısı
 app.use('/upload', uploadRoute);
+app.use('/records', recordsRoute);
 
 // MongoDB Bağlantısı
 mongoose.connect(process.env.MONGO_URI, {
