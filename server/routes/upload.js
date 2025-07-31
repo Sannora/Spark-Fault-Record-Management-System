@@ -2,11 +2,11 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-const parseCFG = require('../parser/parseCFG');
 const Record = require('../models/Record');  // Modeli import et
 
 const router = express.Router();
 const upload = require('../middleware/uploadMiddleware');
+const parseCSV = require('../parser/parseCSV');
 
 router.post('/', upload.single('file'), async (req, res) => {
   try {
@@ -16,7 +16,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     const fileContent = fs.readFileSync(filePath, 'utf-8');
 
     // .cfg dosyasını JSON'a çevir
-    const jsonData = parseCFG(fileContent);
+    const jsonData = parseCSV(fileContent);
 
     // Yeni kayıt oluştur ve kaydet
     const newRecord = new Record({

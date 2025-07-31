@@ -23,7 +23,7 @@ const RecordList = () => {
             <ul>
                 {records.map((record) => (
                     <div key={record._id} onClick={() => navigate(`/detail/${record._id}`)}>
-                        <strong>{record.name || "İsimsiz Fider"}</strong> — {record._id}
+                        <strong>{record.originalFileName || "İsimsiz Fider"}</strong>-{record._id}
                     </div>
                 ))}
             </ul>

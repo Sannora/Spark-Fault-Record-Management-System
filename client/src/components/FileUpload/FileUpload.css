@@ -1,0 +1,62 @@
+.file-upload-component {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blueviolet;
+}
+
+.file-upload-card{
+    width: 75%;
+    aspect-ratio: 2/1;
+    box-sizing: border-box;
+    padding: 16px;
+    background-color: white;
+}
+
+.file-upload-header {
+    text-align: start;
+    color: black;
+    padding-bottom: 8px;
+    margin-bottom: 64px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.file-input-container {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 48px;
+    margin-bottom: 32px;
+    border: dashed 2px rgba(0, 0, 0, 0.25);
+}
+
+.upload-queue{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.upload-queue-list{
+    width: 100%;
+}
+
+.upload-queue-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 8px;
+    background-color: aliceblue;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.upload-queue-item + .upload-queue-item {
+    margin-top: 8px;
+}

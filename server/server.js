@@ -5,6 +5,8 @@ const cors = require('cors');
 const uploadRoute = require('./routes/upload');
 const recordsRoute = require('./routes/records');
 
+const MONGO_URI = process.env.MONGO_URI;
+
 const PORT = 5000;
 const app = express();
 
@@ -17,10 +19,7 @@ app.use('/upload', uploadRoute);
 app.use('/records', recordsRoute);
 
 // MongoDB Bağlantısı
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(MONGO_URI)
 .then(() => {
   console.log('✅ MongoDB bağlantısı başarılı');
   app.listen(PORT, () => console.log(`🚀 Server http://localhost:${PORT} portunda çalışıyor`))
