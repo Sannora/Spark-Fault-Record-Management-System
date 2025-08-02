@@ -2,40 +2,48 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-const Record = require('../models/Record');  // Modeli import et
-
+const Record = require('../models/Record');
 const router = express.Router();
 const upload = require('../middleware/uploadMiddleware');
 const parseCSV = require('../parser/parseCSV');
 
-router.post('/', upload.single('file'), async (req, res) => {
+router.post('/', upload.array('file'), async (req, res) => {
   try {
-    const filePath = req.file.path;
+    const results = [];
 
-    // Dosyayı oku
-    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    for (const file of req.files) {
+      const filePath = file.path;
 
-    // .cfg dosyasını JSON'a çevir
-    const jsonData = parseCSV(fileContent);
+      // Dosyayı oku
+      const fileContent = fs.readFileSync(filePath, 'utf-8');
 
-    // Yeni kayıt oluştur ve kaydet
-    const newRecord = new Record({
-      originalFileName: req.file.originalname,
-      storedFilePath: filePath,
-      jsonData: jsonData
-    });
-    await newRecord.save();
+      // CSV'yi JSON'a çevir
+      const jsonData = parseCSV(fileContent);
 
-    console.log(`✅ Başarıyla kaydedildi: ${req.file.originalname} - ID: ${newRecord._id}`);
+      // Veritabanına kaydet
+      const newRecord = new Record({
+        originalFileName: file.originalname,
+        storedFilePath: filePath,
+        jsonData: jsonData
+      });
+      await newRecord.save();
 
-    // JSON veriyi yanıt olarak gönder
-    res.json(jsonData);
+      console.log(`✅ Kaydedildi: ${file.originalname} - ID: ${newRecord._id}`);
 
-    // Geçici dosyayı sistemden sil
-    fs.unlinkSync(filePath);
+      results.push({
+        fileName: file.originalname,
+        data: jsonData
+      });
+
+      // Geçici dosyayı sil
+      fs.unlinkSync(filePath);
+    }
+
+    // Tüm sonuçları gönder
+    res.json(results);
   } catch (error) {
     console.error('Yükleme hatası:', error);
-    res.status(500).json({ error: 'Dosya yükleme sırasında bir hata oluştu.' });
+    res.status(500).json({ error: 'Dosya(lar) yüklenirken bir hata oluştu.' });
   }
 });
 

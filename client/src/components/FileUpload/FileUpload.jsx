@@ -1,8 +1,14 @@
 import './FileUpload.css'
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCloudArrowUp, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 export default function UploadForm() {
+
+  const navigate = useNavigate();
+
   const [jsonData, setJsonData] = useState(null);
   const [fileQueue, setFileQueue] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -55,6 +61,7 @@ export default function UploadForm() {
       const res = await axios.post('http://localhost:5000/upload', formData);
       setJsonData(res.data);
       setFileQueue([]); // Yükleme sonrası kuyruğu temizle
+      navigate('/record-list');
     } catch (err) {
       console.error("Upload error:", err);
     }
@@ -92,10 +99,11 @@ export default function UploadForm() {
             onChange={handleFileChange}
             style={{ display: 'none' }}
           />
-          <div>
+          <div className='file-input-area'>
+            <FontAwesomeIcon icon={faCloudArrowUp} className="upload-icon" />
             {isDragging
               ? <span>Dosyanı buraya bırak...</span>
-              : <span>Dosyanı buraya bırak veya dosya seç</span>
+              : <span>Dosyanı buraya bırak veya <span>dosya seç</span></span>
             }
           </div>
           {jsonData && (
@@ -113,17 +121,17 @@ export default function UploadForm() {
                       className="delete-queue-item-btn"
                       onClick={() => handleRemoveFile(idx)}
                     >
-                      Sil
+                      <FontAwesomeIcon icon={faTrash} className='delete-icon' />
                     </button>
                   </li>
                 ))}
               </ul>
               <div className="upload-queue-actions">
-                <button className="confirm-upload-btn" onClick={handleConfirmUpload}>
-                  Yüklemeyi Onayla
-                </button>
                 <button className="clear-queue-btn" onClick={handleClearQueue}>
                   Kuyruğu Temizle
+                </button>
+                <button className="confirm-upload-btn" onClick={handleConfirmUpload}>
+                  Yüklemeyi Onayla
                 </button>
               </div>
             </>
