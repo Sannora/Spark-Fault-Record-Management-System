@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const uploadRoute = require('./routes/upload');
 const recordsRoute = require('./routes/records');
+const analyzeRoute = require('./routes/analyze');
 
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -17,6 +18,9 @@ app.use(express.json());
 // Route bağlantısı
 app.use('/upload', uploadRoute);
 app.use('/records', recordsRoute);
+
+// Analyze.js bağlantısı
+app.use('/analyze', analyzeRoute);
 
 // MongoDB Bağlantısı
 mongoose.connect(MONGO_URI)
