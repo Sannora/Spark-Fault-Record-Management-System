@@ -1,0 +1,81 @@
+## 🔍 Özet Bulgular
+
+- **Faz-Toprak Arızası Teşhisi:** Ani ve yüksek faz akımları (IL1, IL2, IL3) ile belirgin toprak akımı (Io N) artışı, eş zamanlı faz voltajı (U1, U2, U3) düşüşleri ve toprak voltajı (Uo N) yükselişi, bir faz-toprak arızasının varlığını kuvvetle göstermektedir.
+- **Hızlı Koruma Çalışması:** Arıza başlangıcından akım kesilmesine kadar geçen sürenin yaklaşık `0.15 saniye` olması, koruma sisteminin arızaya çok hızlı ve etkin şekilde müdahale ettiğini göstermektedir.
+- **Röle Fonksiyonu Tespiti:** SCADA verisinde **50N-51N pick up** ve **50-51 pick up** sinyallerinin listelenmesi, ilgili aşırı akım ve toprak aşırı akım fonksiyonlarının arızayı doğru tespit ettiğini göstermektedir.
+
+---
+
+## 📊 Detaylı Analiz
+
+### 1. Ön Değerlendirme
+
+- **Akımlar (IL1, IL2, IL3, Io N):**  
+  - `t ≈ 0.25 s` civarında tüm faz akımlarında ani ve yüksek artış.
+  - Topraklama hattı akımı (Io N) belirgin yükselme.
+  - `t ≈ 0.40 s` civarında akımlar sıfıra dönerek kesici açmasını işaret eder.
+
+- **Voltajlar (U1, U2, U3, Uo N):**  
+  - Faz voltajlarında keskin düşüş, toprak voltajında önemli artış.
+  - Voltajlar 40V seviyesinden neredeyse 0V’a kadar iner.
+
+- **Frekans:**  
+  - Kayıtta doğrudan yok; analizler 50Hz referansına göre yapılmıştır.
+
+- **IEC 60255 Hata Aralığı Kontrolü:**  
+  - Değişimler ±7.5% sınırının çok üzerinde, arızayı net doğrular.
+
+- **Kesici Konum Değişimi:**  
+  - Grafik verisi olmamasına rağmen akımın ani sıfırlanması kesici açmasını dolaylı olarak kanıtlar.
+
+---
+
+### 2. Trip & Pickup Analizi
+
+- **Koruma Fonksiyonu Etkinliği:**  
+  - **50/51** (faz aşırı akım) ve **50N/51N** (toprak aşırı akım) fonksiyonları devreye girmiş.
+  - "TOPRAK GENEL AÇMA" ve "FAZ GENEL AÇMA" sinyalleri açma işlemini doğrular.
+
+- **Zamanlama:**  
+  - Arıza başlangıcı ile akımın kesilmesi arasında **≈0.15 s**.  
+  - Modern röleler ve hızlı kesiciler için tipik bir değer.
+
+- **IEC 60255 Eğrilerine Uyum:**  
+  - Yüksek arıza akımı → anlık basamak veya çok ters zaman karakteristiği ile uyumlu.
+
+---
+
+### 3. Olasılık Tabanlı Arıza Tespiti
+
+- **Yüksek Olasılık (%80+):**
+  - Ani yüksek faz & toprak akımı + faz voltajı düşüşü + toprak voltajı artışı → **Faz-Toprak Arızası**.
+  - Röle fonksiyonları arızayı başarıyla tespit etmiş.
+  - 0.15 s’de temizlenmesi ayarların optimize olduğunu gösterir.
+
+---
+
+### 4. Veri Eksikliği Senaryoları
+
+- **Trip Log Eksikliği:**  
+  - Röle ayar akımları (Is) veya TMS doğrudan verilmemiş.  
+  - Yorumlar olay süresine dayalı.
+
+- **Kesici Konum Verisi (Zaman Serisi) Eksik:**  
+  - Sinyallerin zaman grafiği yok, akım sıfırlanması üzerinden değerlendirme yapıldı.
+
+- **Frekans Verisi Eksik:**  
+  - 50Hz varsayımı ile analiz yapıldı.
+
+---
+
+## 💡 Öneriler
+
+**Acil Yapılacaklar**
+- Arıza noktasının sahada teyit edilmesi
+- Kesici mekanik durumu kontrolü
+- Röle testlerinin tekrarlanması
+
+**Uzun Vadeli Çözümler**
+- Koruma rölesi ayarlarının IEC 60255’e göre optimize edilmesi
+- Hat izolasyon direncinin düzenli ölçülmesi
+- SCADA verilerinde trip log ve kesici konum dalga formlarının kaydedilmesi

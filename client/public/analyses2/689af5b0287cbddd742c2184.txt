@@ -1,0 +1,49 @@
+SCADA Arıza Analiz Raporu
+Tarih: 2025-08-12 11:15:38
+
+────────────────────────────────────────────
+📊 Özet Bulgular
+- Bir REF615 koruma rölesinden, çeşitli faz ve toprak akım/gerilim parametreleri ile çok sayıda koruma fonksiyonu (örn. aşırı akım, toprak arızası, yeniden kapama, gerilim korumaları) ve kesici konum bilgisini içeren bir arıza kaydı (COMTRADE) tetiklenmiştir.
+- Kayıtta doğrudan akım/gerilim dalga formları veya binary sinyallerin (pikap, trip, kesici konumu) zaman içindeki değişim bilgileri bulunmadığından, arızanın kesin tipi, trip pickup seviyeleri, röle operasyon zamanlamaları veya kesici açma anları hakkında kantitatif analiz yapılamamaktadır.
+- Mevcut kanal etiketleri, bir toprak arızasının veya faz-toprak arızasının (Io, Uo, 50N-51N, 67N sinyallerinin varlığı nedeniyle) tetikleyici olabileceğini ve rölenin arızayı tespit edip bir açma emri verdiğini güçlü bir şekilde düşündürmektedir.
+
+────────────────────────────────────────────
+🛠 Detaylı Analiz
+
+1. ÖN DEĞERLENDİRME
+
+   • Tüm ölçülen parametreleri zaman serisi olarak özetleme: Verilen COMTRADE kaydı (REF615 cihazından), 09:06:22.864 zamanında tetiklenen 2 saniyelik bir olayı kapsamaktadır. Ölçülen parametreler şunlardır:
+     - Akım Kanalları: IL1, IL2, IL3 (faz akımları) ve Io (toprak akımı). Grafik eksenleri, bu akımların 0-4 Amper aralığında değerler gösterebileceğini belirtmektedir.
+     - Gerilim Kanalları: U1, U2, U3 (faz gerilimleri) ve Uo (toprak gerilimi). Grafik eksenleri, bu gerilimlerin 0-40 Volt aralığında değerler gösterebileceğini belirtmektedir.
+     - Binary Kanallar: Çok sayıda ikili giriş (binary input) mevcuttur. Bunlar arasında genel faz ve toprak açma sinyalleri (FAZ GENEL ACMA, TOPRAK GENEL ACMA), farklı koruma fonksiyonlarının (örn. 50N-51N aşırı akım/toprak arızası, 67/67N yönlü aşırı akım/toprak arızası, 27/59 gerilim, 46 negatif sekans, 49F termal) pikap ve trip durumları, yeniden kapama rölesi (79) ile ilgili durumlar (çalışıyor, hazır, aktif, nihai açma) ve kesici konum bilgileri (KESICI ACIK, KESICI KAPALI) bulunmaktadır.
+     - Frekans bilgisi doğrudan belirtilmemiştir; analizde 50Hz şebeke frekansı referans alınacaktır.
+
+   • Ani değişimlerin IEC 60255 standart hatası aralığı (±7.5%) içinde mi kontrolü: Sağlanan veri setinde akım veya gerilim dalga formları veya sayısal değerleri bulunmadığından, herhangi bir ani değişimin büyüklüğünü veya IEC 60255 standart hata aralığına uygunluğunu kontrol etmek mümkün değildir. Ancak, kaydın bir tetikleme olayı sonucunda oluştuğu bilgisi, akım veya gerilim parametrelerinde IEC 60255'te belirtilen kriterleri aşan bir değişiklik olduğunu düşündürmektedir.
+
+   • Kesici konum değişiklikleriyle eş zamanlı akım/voltaj değişimlerinin eşleştirilmesi: "KESICI ACIK" ve "KESICI KAPALI" binary kanalları mevcut olmakla birlikte, bu kanalların zaman içindeki durum değişiklikleri (ON/OFF geçişleri) verilmemiştir. Dolayısıyla, kesicinin ne zaman açtığı veya kapandığı, bu eylemlerin akım/gerilim değişimleriyle nasıl ilişkili olduğu belirlenememektedir. Tam bir analiz için, kesici konum sinyallerinin zaman serisi verisi esastır.
+
+2. TRIP PICKUP ANALİZİ (Dolaylı Yöntemler)
+
+   • Aşırı akım bölgelerinde IEC 60255 ters zaman eğrilerine uyum kontrolü: Röle ayarları (Is, TMS, k, α) ve olay anındaki ölçülen akım değerleri (I) mevcut olmadığından, t(I) = TMS × [k / (I/Is)^α - 1] formülü ile teorik trip zamanı hesaplaması veya IEC 60255 ters zaman eğrilerine uygunluk kontrolü yapılamamaktadır. Ancak, "50N-51N pick up", "67N-1(1) pick up" gibi pikap sinyallerinin varlığı, rölenin ilgili koruma fonksiyonlarının bir arıza akımını algıladığını ve eşik değerinin aşıldığını belirtmektedir.
+
+   • Trip zamanı verisi yoksa, standart ters (NI) eğrisi varsayımıyla teorik hesaplama: Ölçülen akım değerleri mevcut olmadığından, bir standart ters (NI) eğrisi varsayımıyla dahi teorik trip zamanı hesaplaması yapmak mümkün değildir.
+
+   • Kesici açma anıyla röle alarmı arasındaki gecikmenin kontrolü: Hem röle trip sinyallerinin (örn. "FAZ GENEL ACMA", "67N-2 trip") hem de kesici konum sinyalinin ("KESICI ACIK") zaman içindeki aktifleşme anları (dalga formları) mevcut olmadığından, bu kritik gecikmenin IEC 60255 dinamik performans limitleri içinde olup olmadığını kontrol etmek mümkün değildir.
+
+3. OLASILIK TABANLI ARIZA TESPİTİ
+
+   • Sağlanan verilerin sınırlı olması nedeniyle (gerçek dalga formları ve binary sinyal değişimlerinin zaman damgaları eksikliği), arızanın kesin türü veya koruma koordinasyonunun performansı hakkında yüksek olasılıklı çıkarımlar yapmak zordur. Ancak, mevcut kanal etiketleri üzerinden aşağıdaki çıkarımlar yapılabilir:
+     - Olası Arıza Tipi: "Io N/ A" ve "Uo N/ V" gibi toprak akımı ve gerilimi kanallarının varlığı ile "50N-51N pick up/OPER", "67N-1(1) pick up/trip" gibi toprak arızası koruma fonksiyonlarının varlığı, bir faz-toprak arızası veya saf toprak arızası olayının meydana geldiğine dair güçlü işaretlerdir. "67-1(1) pick up/trip" sinyalleri ise faz arızası (örn. faz-faz veya üç faz) olasılığını da düşündürmektedir.
+     - Röle Operasyonu: "FAZ GENEL ACMA" ve "TOPRAK GENEL ACMA" gibi genel açma sinyallerinin varlığı, rölenin bir arıza durumu algıladığını ve kesiciye açma komutu verdiğini kesin olarak göstermektedir.
+     - Kesici Operasyonu: "KESICI ACIK" ve "KESICI KAPALI" sinyallerinin kayıtta bulunması, kesici operasyonunun izlendiğini ve muhtemelen bir açma eylemi gerçekleştiğini belirtir. Akım kanallarının mevcut olması, eğer dalga formları olsaydı, akımın sıfırlanma anının kesici açma anı olarak kabul edilebileceğini gösterir.
+     - Yeniden Kapama Fonksiyonu: "79 NIHAI ACMA", "79 CALISIYOR", "79 HAZIR", "79 AKTIF" gibi yeniden kapama (Auto-Recloser) fonksiyonuna ait sinyallerin varlığı, sistemde yeniden kapama korumasının devrede olduğunu ve bu arıza durumunda bir yeniden kapama döngüsünün başlamış veya tamamlanmış olabileceğini düşündürür. "NIHAI ACMA" sinyali, arızanın kalıcı olduğunu ve kesicinin son yeniden kapama denemesinden sonra açıldığına işaret edebilir.
+
+4. VERİ EKSİKLİĞİ SENARYOLARI
+
+   • Trip log'u eksikliği: Trip logu bilgisi doğrudan bir metin olarak sunulmasa da, "50N-51N pick up", "67N-2 trip", "FAZ GENEL ACMA" gibi binary input kanalları, aslında bir olay logunun parçalarıdır. Ancak, bu sinyallerin zaman içindeki aktifleşme anları (dalga formları gibi) sunulmadığı için, hangi koruma fonksiyonunun hangi sırada ve ne zaman tetiklendiği tam olarak anlaşılamamaktadır.
+   • Kesici konum bilgisi eksikliği: "KESICI ACIK" ve "KESICI KAPALI" binary kanalları mevcuttur. Ancak, bu kanalların zaman içindeki değişimleri (açma/kapama anları) sağlanmamıştır. Eğer akım dalga formları olsaydı ve akımlar sıfıra düşseydi, bu durum kesicinin açtığına dair güçlü bir dolaylı kanıt olurdu. Mevcut durumda bu doğrudan doğrulama mümkün değildir; ancak arıza akımlarının yükseldiği varsayıldığında kesicinin açtığı kabul edilmelidir.
+   • Frekans verisi eksikliği: Frekans verisi doğrudan belirtilmemiştir. Analiz, genel şebeke standardı olan 50Hz referans alınarak yürütülmüştür. Harmonik analiz için gerekli dalga formları mevcut değildir.
+
+────────────────────────────────────────────
+💡 Genel Değerlendirme
+Sunulan veri, bir koruma rölesi tarafından kaydedilen bir olayın kapsamlı kanal listesini sunmaktadır. Ancak, analiz için gerekli olan akım/gerilim dalga formları ve binary sinyallerin zaman içindeki gerçek durum değişimleri eksiktir. Bu eksiklik, arızanın kesin nedenini, koruma ayarlarının yeterliliğini, rölenin ve kesicinin tepki sürelerini IEC 60255 standartlarına göre kantitatif olarak doğrulamayı imkansız kılmaktadır. Daha detaylı ve kesin bir arıza analizi için, olay anındaki tüm analog ve binary kanallara ait zaman serisi verilerinin (tam COMTRADE dosyası) incelenmesi gerekmektedir.

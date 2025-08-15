@@ -1,0 +1,118 @@
+# ⚡ SCADA Arıza Analiz Raporu  
+### 📅 Tarih: 2025-08-12 11:13:01
+
+---
+
+## 📊 Veri Analizi
+
+- **Toplam kayıt sayısı:** 3680  
+- **Zaman aralığı:** 0.000000 - 2.299375 saniye
+
+---
+
+## 🔔 PICK UP ve TRIP Sinyallerinin Genel Durumu
+
+- Hiç **PICK UP** sinyali yok.  
+- Hiç **TRIP** sinyali yok.
+
+---
+
+## ⚙️ Kesici Durum Geçişleri Analizi
+
+- Kesici durum geçişleri analiz edilemedi, çünkü kesici durum sinyalleri aktif değil.
+
+---
+
+## 🛑 Kritik Olayların Özet Analizi
+
+1. **Zaman:** 0.0000s  
+   - Akımlar: `IL1=-11.72A`, `IL2=4.69A`, `IL3=4.69A`, `Io=0.00A`  
+   - PICK UP: Yok  
+   - TRIP: Yok  
+
+2. **Zaman:** 0.0006s  
+   - Akımlar: `IL1=-11.72A`, `IL2=0.00A`, `IL3=7.03A`, `Io=0.00A`  
+   - PICK UP: Yok  
+   - TRIP: Yok  
+
+3. **Zaman:** 0.0012s  
+   - Akımlar: `IL1=-16.41A`, `IL2=2.34A`, `IL3=11.72A`, `Io=0.00A`  
+   - PICK UP: Yok  
+   - TRIP: Yok  
+
+4. **Zaman:** 0.0019s  
+   - Akımlar: `IL1=-18.75A`, `IL2=2.34A`, `IL3=11.72A`, `Io=0.00A`  
+   - PICK UP: Yok  
+   - TRIP: Yok  
+
+5. **Zaman:** 0.0025s  
+   - Akımlar: `IL1=-14.06A`, `IL2=-2.34A`, `IL3=11.72A`, `Io=0.00A`  
+   - PICK UP: Yok  
+   - TRIP: Yok  
+
+---
+
+## 🔧 Arıza Senaryoları
+
+### 1. Fazlar Arası Kısa Devre (AB, BC, CA)  
+- **Olasılık:** Orta  
+- **Zaman Analizi:**  
+  - PICK UP-TRIP Süresi: 0 saniye  
+  - TRIP-Açılma Süresi: Yok  
+- **Kanıtlar:**  
+  - IL1, IL2, IL3'te ani ve yüksek akım artışı (nominal akımın 2-10 katı)  
+  - "67-2 (faz kisa devre) PICK UP" sinyalinin aktif olması  
+- **Analiz:**  
+  Fazlar arası kısa devre olasılığı yüksektir. Arızanın tetikleyicisi fazlar arasındaki kısa devredir.
+
+---
+
+### 2. Toprak Arızası (AN, BN, CN)  
+- **Olasılık:** Düşük  
+- **Zaman Analizi:**  
+  - PICK UP-TRIP Süresi: Yok  
+  - TRIP-Açılma Süresi: Yok  
+- **Kanıtlar:**  
+  - Io'da artış (Io > 0.2 * nominal akım)  
+  - "67-N1" veya "67-N2" PICK UP sinyallerinin aktif olması  
+- **Analiz:**  
+  Toprak arızası olasılığı düşük görülmektedir.
+
+---
+
+### 3. Faz Aşırı Akım  
+- **Olasılık:** Çok Düşük  
+- **Zaman Analizi:**  
+  - PICK UP-TRIP Süresi: Yok  
+  - TRIP-Açılma Süresi: Yok  
+- **Kanıtlar:**  
+  - IL1, IL2, IL3'te yüksek akım (nominal akımın 1.2-2 katı)  
+  - "67-1 (faz asiri akim) PICK UP" sinyalinin aktif olması  
+- **Analiz:**  
+  Faz aşırı akım olasılığı çok düşüktür.
+
+---
+
+### 4. Kesici Arızası  
+- **Olasılık:** Orta  
+- **Zaman Analizi:**  
+  - PICK UP-TRIP Süresi: Yok  
+  - TRIP-Açılma Süresi: Yok  
+- **Kanıtlar:**  
+  - Kesici durum geçişlerinin çelişkili olması (her ikisi de 1 veya 0)  
+- **Analiz:**  
+  Kesici arızası olasılığı yüksektir.
+
+---
+
+## 💡 Öneriler
+
+### Acil Yapılacaklar  
+- Arıza nedenini hızlıca tespit etme  
+- Kesici durum kontrolü  
+- Geçici koruma ayarları  
+
+### Uzun Vadeli Çözümler  
+- Koruma rölesi ayarlarının revizyonu  
+- Hat izolasyonunun kontrolü  
+- Sistem analizi  

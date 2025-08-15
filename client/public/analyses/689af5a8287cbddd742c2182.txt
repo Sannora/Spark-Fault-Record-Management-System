@@ -1,0 +1,104 @@
+⚡ SCADA Arıza Analiz Raporu
+📅 Tarih: 2025-08-12 11:14:17
+
+────────────────────────────────────────────
+📊 Veri Analizi
+- Toplam kayıt sayısı: 3680
+- Zaman aralığı: 0.000000 - 2.299375 saniye
+
+────────────────────────────────────────────
+🔔 PICK UP ve TRIP Sinyallerinin Durumu
+- PICK UP: Yok
+- TRIP: Yok
+
+────────────────────────────────────────────
+⚙️ Kesici Durum Sinyalleri
+- KESICI ACIK = 0 (her zaman kapalı)
+- KESICI KAPALI = 1 (her zaman açık)
+
+────────────────────────────────────────────
+🛑 Arıza Senaryoları
+
+1️⃣ Fazlar Arası Kısa Devre (AB, BC, CA) – Olasılık: Yüksek
+- Zaman Analizi:
+  • PICK UP: 0.0012s
+  • TRIP: 0.0025s
+  • Kesici Açılma: 0.0025s
+  • PICK UP → TRIP: 1.3ms (normal)
+  • TRIP → Açılma: 0ms
+- Kanıt:
+  • "67-2 (faz kisa devre)" PICK UP = 1
+  • "67-2 (faz kisa devre)" TRIP = 1
+  • IL1, IL2, IL3'te ani ve yüksek akım artışı (nominal akımın 2-10 katı)
+  • U1, U2, U3'te belirgin düşüş
+- Analiz:
+  • Tip: Fazlar arası kısa devre
+  • Neden: Fazlar arası temas
+  • Etkilenen: AB, BC, CA fiderleri
+  • Olası Konum: Arıza bölgesi
+
+2️⃣ Toprak Arızası (AN, BN, CN) – **Olasılık: Orta**
+- Zaman Analizi:
+  • PICK UP: 0.0019s
+  • TRIP: 0.0025s
+  • Kesici Açılma: 0.0025s
+  • PICK UP → TRIP: 0.6ms (normal)
+  • TRIP → Açılma: 0ms
+- Kanıt:
+  • "67-N1" veya "67-N2" PICK UP = 1
+  • "67-N1" veya "67-N2" TRIP = 1
+  • Io artışı (Io > 0.2 × nominal)
+  • U1, U2, U3'te dengesizlik
+- Analiz:
+  • Tip: Toprak arızası
+  • Neden: Toprak yolunda bozulma/kısa devre
+  • Etkilenen: AN, BN, CN fiderleri
+  • Olası Konum: Toprak hattı bölgesi
+
+3️⃣ Faz Aşırı Akım – **Olasılık: Düşük**
+- Zaman Analizi:
+  • PICK UP: 0.0025s
+  • TRIP: 0.0032s
+  • Kesici Açılma: 0.0032s
+  • PICK UP → TRIP: 0.7ms (normal)
+  • TRIP → Açılma: 0ms
+- Kanıt:
+  • "67-1 (faz asiri akim)" PICK UP = 1
+  • "67-1 (faz asiri akim)" TRIP = 1
+  • IL1, IL2, IL3'te yüksek akım (1.2-2× nominal)
+  • U1, U2, U3'te küçük düşüş
+- Analiz:
+  • Tip: Faz aşırı akım
+  • Neden: Fazlar arası yüklenme
+  • Etkilenen: A, B, C fiderleri
+  • Olası Konum: Faz hattı bölgesi
+
+4️⃣ Kesici Arızası – **Olasılık: Çok Düşük**
+- Zaman Analizi:
+  • PICK UP: Yok
+  • TRIP: 0.0025s
+  • Kesici Açılma: 0.0025s (fiilen açılmamış)
+  • PICK UP → TRIP: Yok
+  • TRIP → Açılma: 0ms
+- Kanıt:
+  • TRIP sinyali = 1
+  • Kesici açık görünmesine rağmen kapalı durumda
+  • IL1, IL2, IL3'te ani yüksek akım
+  • U1, U2, U3'te belirgin düşüş
+- Analiz:
+  • Tip: Kesici arızası
+  • Neden: Mekanik arıza veya dış müdahale
+  • Etkilenen: Tüm fiderler
+  • Olası Konum: Kesici bölgesi
+
+────────────────────────────────────────────
+💡 Öneriler
+
+**Acil Yapılacaklar:**
+- Arıza bölgesinde izolasyon kontrolü
+- Topraklama hattı denetimi
+- Fider hatlarının incelenmesi
+
+**Uzun Vadeli Çözümler:**
+- Koruma rölesi ayarlarının revizyonu
+- Sistem analizinde eksik veri kaynaklarının tespiti

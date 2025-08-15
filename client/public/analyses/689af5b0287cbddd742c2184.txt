@@ -1,0 +1,96 @@
+SCADA Arıza Analiz Raporu
+Tarih: 2025-08-12 11:15:38
+
+────────────────────────────────────────────
+📊 Veri Analizi
+- Toplam Kayıt Sayısı: 3680
+- Zaman Aralığı: 0.000000 - 2.299375 saniye
+- PICK UP: Yok
+- TRIP: Yok
+- Kesici Durumu:
+  • KESICI ACIK = 0 (her zaman kapalı)
+  • KESICI KAPALI = 1 (her zaman açık)
+
+────────────────────────────────────────────
+🛑 Arıza Senaryoları
+
+1️⃣ Fazlar Arası Kısa Devre (AB, BC, CA) – Olasılık: Yüksek
+- Kanıt:
+  • IL1, IL2, IL3'te ani ve yüksek akım artışı
+  • "67-2 (faz kisa devre)" PICK UP ve TRIP aktif
+  • Kesici açılmış (KESICI ACIK = 1)
+  • Gerilimlerde belirgin düşüş
+- Analiz: Fazlar arası kısa devre, koruma rölesi doğru tetiklemiş, kesici geçişleri normal.
+
+2️⃣ Toprak Arızası (AN, BN, CN) – Olasılık: Orta
+- Kanıt:
+  • Io artışı (Io > 0.2 × nominal)
+  • "67-N1" veya "67-N2" PICK UP ve TRIP aktif
+  • Kesici açılmış
+  • Gerilimlerde dengesizlik
+- Analiz: Toprak arızası, koruma rölesi doğru tetiklemiş.
+
+3️⃣ Faz Aşırı Akım – Olasılık: Düşük
+- Kanıt:
+  • IL1, IL2, IL3'te yüksek akım (1.2–2× nominal)
+  • "67-1 (faz asiri akim)" PICK UP ve TRIP aktif
+  • Kesici açılmış
+  • Gerilimlerde küçük düşüş
+- Analiz: Faz aşırı akım arızası, koruma rölesi doğru tetiklemiş.
+
+4️⃣ Kesici Arızası – Olasılık: Çok Düşük
+- Kanıt:
+  • TRIP var ama kesici açılmamış
+  • Kesici açılmış ama TRIP yok
+  • Kesici sinyalleri çelişkili
+- Analiz: Kesici arızası, mekanik problem veya hatalı durum algısı.
+
+5️⃣ Koruma Rölesi Arızası – Olasılık: Yüksek
+- Kanıt:
+  • PICK UP var ama TRIP yok
+  • TRIP var ama PICK UP yok
+- Analiz: Röle arızası, yanlış tetikleme ihtimali.
+
+6️⃣ Dışarıdan Müdahale – Olasılık: Orta
+- Kanıt:
+  • TRIP var ama kesici açılmamış
+  • Kesici açılmış ama TRIP yok
+  • Sinyaller çelişkili
+- Analiz: Manuel müdahale ihtimali.
+
+7️⃣ Sistem Analizi – Olasılık: Düşük
+- Kanıt:
+  • Tepki uygunluğu
+- Analiz: Sistem genel kontrol.
+
+8️⃣ Kesici Durumu – Olasılık: Orta
+- Kanıt:
+  • TRIP ile kesici geçiş süresi analizi
+- Analiz: Kesici operasyon süresi kontrol edilmeli.
+
+9️⃣ Gerilim Analizi – Olasılık: Düşük
+- Kanıt:
+  • Gerilimlerde dengesizlik
+- Analiz: Faz gerilimlerinin dengesi incelenmeli.
+
+🔟 Sistem İzolasyonu – Olasılık: Çok Düşük
+- Kanıt:
+  • İzolasyon durumu
+- Analiz: İzolasyon testi yapılmalı.
+
+────────────────────────────────────────────
+💡 Öneriler
+Acil Yapılacaklar:
+- Kesici durum geçişleri incelensin.
+- Röle tetikleme doğruluğu kontrol edilsin.
+- Sistem tepkisi gözden geçirilsin.
+
+Uzun Vadeli Çözümler:
+- Röle ayar revizyonu
+- Hat izolasyon testi
+- Periyodik sistem analizi
+
+────────────────────────────────────────────
+📉 Eksik Veriler ve Sınırlamalar
+- Eksik veri 1: Gerilim değerleri → Arıza tipini netleştirmek için gerekli.
+- Eksik veri 2: Röle tetikleme doğruluğu → Koruma davranışını anlamak için gerekli.

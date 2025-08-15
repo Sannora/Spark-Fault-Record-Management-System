@@ -9,7 +9,6 @@ export default function UploadForm() {
 
   const navigate = useNavigate();
 
-  const [jsonData, setJsonData] = useState(null);
   const [fileQueue, setFileQueue] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
@@ -58,8 +57,7 @@ export default function UploadForm() {
     const formData = new FormData();
     fileQueue.forEach(file => formData.append('file', file));
     try {
-      const res = await axios.post('http://localhost:5000/upload', formData);
-      setJsonData(res.data);
+      await axios.post('http://localhost:5000/upload', formData);
       setFileQueue([]); // Yükleme sonrası kuyruğu temizle
       navigate('/record-list');
     } catch (err) {
@@ -106,9 +104,6 @@ export default function UploadForm() {
               : <span>Dosyanı buraya bırak veya <span>dosya seç</span></span>
             }
           </div>
-          {jsonData && (
-            <pre>{JSON.stringify(jsonData, null, 2)}</pre>
-          )}
         </div>
         <div className="upload-queue">
           {fileQueue && fileQueue.length > 0 && (

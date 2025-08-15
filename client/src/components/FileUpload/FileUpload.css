@@ -4,6 +4,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
+    padding-top: 32px;
     background-color: #005BAC;
 }
 
@@ -14,6 +16,7 @@
     padding: 16px;
     border-radius: 8px;
     background-color: #F4F4F4;
+    overflow: auto;
 }
 
 .file-upload-header {
